@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust</title>
+</head>
+<% layout("/layouts/boilerplate") %>
+
+    <body>
+        <div class="row">
+            <div class="col-8 offset-2">
+
+
+                <h1>Listing Details</h1>
+            </div>
+            <div class="col-6 offset-2 mt-2">
+                <div class="card show-card" style="width: 18rem;">
+                    <img src="<%= each_listing.image %>" class="card-img-top show-img" alt="...">
+                    <div class="card-body mt-0">
+                        <p class="card-text ">
+
+                            <b>
+                                <%= each_listing.title%>
+                            </b>
+                            <br>
+                            <%= each_listing.description%>
+                                <br>
+                                <b> &#8377; <%= each_listing.price.toLocaleString("en-IN")%></b>
+                                <br>
+                                <%= each_listing.location%>
+                                    <br>
+                                    <%= each_listing.country%>
+
+                        </p>
+                    </div>
+                </div>
+                <div>
+
+
+
+
+                </div>
+                <div class="btns">
+
+                    <a href="/listing/<%= each_listing._id %>/edit" class="btn btn-dark m-2  offset-1"
+                        style="background-color:#fe424d;border:none">Edit</a>
+
+                    <form method="post" action="/listing/<%= each_listing._id  %>?_method=DELETE">
+                        <Button class="btn btn-dark m-2 offset-4" style="background-color:#222222;border:none">DELETE
+                        </Button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>
