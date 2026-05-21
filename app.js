@@ -90,16 +90,18 @@ app.delete("/listing/:id", wrapAsync(async (req, res) => {
 }))
 
 //REVIEWS ROUTES
-app.post("/listing/:id/reviews", wrapAsync(async(req,res)=>{
-let listing=Listing.findById(req.params.id);
+app.post("/listing/:id/reviews", async(req,res)=>{
+  console.log("reached review route")
+
+let listing=await Listing.findById(req.params.id);
 let newReview=new Review(req.body.review);
 listing.reviews.push(newReview);
 await newReview.save();
 await listing.save()
 console.log("new review saved")
-res.send("review added successfully")
+res.redirect(`/listing/${listing._id}`);
 
-}))
+})
 
 //TO HANDLE UNDE FINED OTHER ROUTES
 app.use((req, res, next) => {
