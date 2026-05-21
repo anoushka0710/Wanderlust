@@ -13,7 +13,7 @@
             <div class="col-8 offset-2">
 
 
-                <h1>Listing Details</h1>
+                <h1><%= each_listing.title%></h1>
             </div>
             <div class="col-6 offset-2 mt-2">
                 <div class="card show-card" style="width: 18rem;">
@@ -21,9 +21,6 @@
                     <div class="card-body mt-0">
                         <p class="card-text ">
 
-                            <b>
-                                <%= each_listing.title%>
-                            </b>
                             <br>
                             <%= each_listing.description%>
                                 <br>
@@ -53,6 +50,24 @@
                     </form>
 
 
+                </div>
+                <div class="mb-3 mt-3">
+                    <hr>
+                    <h1>Leave a review</h1>
+                    <form >
+                        <div class="mb-3 mt-3">
+                      <label for="rating" class="form-label">Rating</label>
+                      <input type="range" min="1" max="5" name="review[rating]" id="rating" class="form-range" />
+                    <div class="mb-3 mt-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control"></textarea>
+                    </div>
+                    <button class="btn btn-dark m-2  offset-1" type="submit">
+                        SUBMIT
+                    </button>
+
+
+                    </form>
                 </div>
             </div>
         </div>
