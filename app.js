@@ -9,7 +9,7 @@ const methodOverride = require("method-override")
 const ejsMate = require("ejs-mate");
 const wrapAsync = require('./utils/wrapAsync.js')
 const ExpressError = require('./utils/ExpressError.js')
-const {listingSchema}=require("./schema.js")
+const {listingSchema,reviewSchema}=require("./schema.js")
 async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 
@@ -35,7 +35,17 @@ const validateListing=(req,res,next)=>{
       next();
     }
 }
-
+const validateReview=(req,res,next)=>{
+ let {error}=reviewSchema.validate(req.body)
+    if(error){
+      console.log(error.details)
+      let errMsg=error.details.map((el)=>el.message).join(",")
+      throw new ExpressError(400,errMsg);
+    }
+    else{
+      next();
+    }
+}
 app.get("/", (req, res) => {
   res.send("this is rooooooooot")
 })
@@ -46,7 +56,7 @@ app.get("/listing", wrapAsync(async (req, res) => {
   res.render("./listings/index", { allListings });
 }))
 
-//3(i).new route(keep this before show route so /new is not mistake as an id 😂)
+//3(i).new route(keep this before show route so /new is not mistake as an id )
 app.get("/listing/new", wrapAsync(async (req, res) => {
   res.render("./listings/new.ejs");
 }))
@@ -67,7 +77,7 @@ app.post("/listing",validateListing,
 //2.show route
 app.get("/listing/:id", wrapAsync(async (req, res) => {
   let { id } = req.params;
-  const each_listing = await Listing.findById(id);
+  const each_listing = await Listing.findById(id).populate("reviews");
   res.render("./listings/show.ejs", { each_listing });
 }))
 
@@ -90,7 +100,7 @@ app.delete("/listing/:id", wrapAsync(async (req, res) => {
 }))
 
 //REVIEWS ROUTES
-app.post("/listing/:id/reviews", async(req,res)=>{
+app.post("/listing/:id/reviews", validateReview,wrapAsync(async(req,res)=>{
   console.log("reached review route")
 
 let listing=await Listing.findById(req.params.id);
@@ -101,9 +111,9 @@ await listing.save()
 console.log("new review saved")
 res.redirect(`/listing/${listing._id}`);
 
-})
+}))
 
-//TO HANDLE UNDE FINED OTHER ROUTES
+//TO HANDLE UNDEFINED OTHER ROUTES
 app.use((req, res, next) => {
   next(new ExpressError(404, 'Page not found'))
 })

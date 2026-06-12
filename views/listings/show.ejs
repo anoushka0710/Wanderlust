@@ -16,7 +16,7 @@
                 <h1><%= each_listing.title%></h1>
             </div>
             <div class="col-6 offset-2 mt-2">
-                <div class="card show-card" style="width: 18rem;">
+                <div class="card show-card listing-card" style="width: 18rem;">
                     <img src="<%= each_listing.image %>" class="card-img-top show-img" alt="...">
                     <div class="card-body mt-0">
                         <p class="card-text ">
@@ -54,20 +54,39 @@
                 <div class="mb-3 mt-3">
                     <hr>
                     <h1>Leave a review</h1>
-                    <form action="/listing/<%= each_listing._id %>/reviews" method="POST">
+                    <form action="/listing/<%= each_listing._id %>/reviews" method="POST" class="needs-validation" novalidate>
                         <div class="mb-3 mt-3">
-                      <label for="rating" class="form-label">Rating</label>
-                      <input type="range" min="1" max="5" name="review[rating]" id="rating" class="form-range" />
-                    <div class="mb-3 mt-3">
-                        <label for="comment" class="form-label">Comment</label>
-                        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control"></textarea>
-                    </div>
-                    <button class="btn btn-dark m-2  offset-1" type="submit">
-                        SUBMIT
-                    </button>
-
-
+                            <label for="rating" class="form-label">Rating</label>
+                            <input type="range" min="1" max="5" name="review[rating]" id="rating" class="form-range" required />
+                            <div class="invalid-feedback">
+                                Please select a rating before submitting.
+                            </div>
+                        </div>
+                        <div class="mb-3 mt-3">
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+                            <div class="invalid-feedback">
+                                Please leave a comment before submitting.
+                            </div>
+                        </div>
+                        <button class="btn btn-dark m-2 offset-1" type="submit">
+                            SUBMIT
+                        </button>
                     </form>
+                    <hr>
+                    <h1>Reviews</h1>
+                  <% for (review of each_listing.reviews) { %>
+                  <div class="card review-card">
+                    <div class="card-body">
+                      <h5 class="card-title">Jane Doe</h5>
+                      <p class="card-text"><%= review.comment %></p>
+                      <p class="card-text"><%= review.rating %></p>
+                    </div>
+
+                  </div>
+                    
+                    
+                   <% } %> 
                 </div>
             </div>
         </div>
