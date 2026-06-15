@@ -99,7 +99,7 @@ app.delete("/listing/:id", wrapAsync(async (req, res) => {
   res.redirect("/listing");
 }))
 
-//REVIEWS ROUTES
+//POST REVIEW ROUTES
 app.post("/listing/:id/reviews", validateReview,wrapAsync(async(req,res)=>{
   console.log("reached review route")
 
@@ -110,6 +110,17 @@ await newReview.save();
 await listing.save()
 console.log("new review saved")
 res.redirect(`/listing/${listing._id}`);
+
+}))
+//DELETE REVIEW ROUTE
+app.delete("/listing/:id/reviews/:reviewId", wrapAsync(async(req,res)=>{
+  let{id,reviewId}=req.params;
+  //USE $pull operator to remove the review reference from the listing's reviews array
+  await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}})
+  //to remove from Review collection 
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/listing/${id}`);
+
 
 }))
 
