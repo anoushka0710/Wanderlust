@@ -117,3 +117,14 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
+
+/* compact alerts */
+.alert {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+}
+
+.alert .btn-close {
+    padding: 0.35rem;
+}

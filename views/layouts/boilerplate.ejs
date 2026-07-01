@@ -19,7 +19,19 @@
 
 <body>
     <%- include("../includes/navbar") %>
-        <div class="container">
+        <div class="container mt-3">
+            <% if (success && success.length) { %>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <%= success[0] %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
+            <% if (error && error.length) { %>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <%= error[0] %>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <% } %>
             <%- body %>
         </div>
         <%- include("../includes/footer") %>
